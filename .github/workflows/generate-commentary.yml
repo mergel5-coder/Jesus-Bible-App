@@ -1,0 +1,87 @@
+name: Generate chapter commentary
+
+# Trigger this manually from the GitHub website:
+# Actions tab -> "Generate chapter commentary" -> "Run workflow"
+on:
+  workflow_dispatch:
+    inputs:
+      step:
+        description: "Which step to run"
+        required: true
+        default: "fetch-bsb-test"
+        type: choice
+        options:
+          - fetch-bsb-test
+          - fetch-bsb-full
+          - generate-batch-submit-john
+          - generate-batch-submit-all
+          - generate-batch-check
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: bible-app-pipeline
+        run: npm install
+
+      - name: Restore cached Bible text (if it exists from a previous run)
+        uses: actions/cache@v4
+        with:
+          path: bible-app-pipeline/data
+          key: bsb-data-${{ github.run_id }}
+          restore-keys: |
+            bsb-data-
+
+      - name: Run fetch-bsb.js (test)
+        if: ${{ github.event.inputs.step == 'fetch-bsb-test' }}
+        working-directory: bible-app-pipeline
+        run: node fetch-bsb.js --test
+
+      - name: Run fetch-bsb.js (full)
+        if: ${{ github.event.inputs.step == 'fetch-bsb-full' }}
+        working-directory: bible-app-pipeline
+        run: node fetch-bsb.js
+        timeout-minutes: 120
+
+      - name: Submit commentary batch (John only, for testing)
+        if: ${{ github.event.inputs.step == 'generate-batch-submit-john' }}
+        working-directory: bible-app-pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node generate-commentary-batch.js --submit --book "John"
+
+      - name: Submit commentary batch (all chapters)
+        if: ${{ github.event.inputs.step == 'generate-batch-submit-all' }}
+        working-directory: bible-app-pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node generate-commentary-batch.js --submit
+
+      - name: Check and save batch results
+        if: ${{ github.event.inputs.step == 'generate-batch-check' }}
+        working-directory: bible-app-pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node generate-commentary-batch.js --check
+
+      - name: Save Bible text for next run
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: bible-app-pipeline/data
+          key: bsb-data-${{ github.run_id }}
