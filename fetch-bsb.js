@@ -73,9 +73,16 @@ function extractVerses(json) {
   if (json.chapter && Array.isArray(json.chapter.content)) {
     const verseItems = json.chapter.content.filter((item) => item.type === "verse");
     if (verseItems.length > 0) {
-      return verseItems.map((v) =>
-        Array.isArray(v.content) ? v.content.join(" ").trim() : String(v.content).trim()
-      );
+      return verseItems.map((v) => {
+        if (!Array.isArray(v.content)) return String(v.content).trim();
+        // Verse content arrays mix plain strings with footnote reference
+        // objects like {"noteId":13} -- keep only the actual text pieces.
+        return v.content
+          .filter((piece) => typeof piece === "string")
+          .join("")
+          .replace(/\s+/g, " ")
+          .trim();
+      });
     }
   }
 
