@@ -75,12 +75,16 @@ function extractVerses(json) {
     if (verseItems.length > 0) {
       return verseItems.map((v) => {
         if (!Array.isArray(v.content)) return String(v.content).trim();
-        // Verse content arrays mix plain strings with footnote reference
-        // objects like {"noteId":13} -- keep only the actual text pieces.
+        // Verse content arrays mix plain strings with non-text pieces like
+        // footnote references ({"noteId":13}) sitting inline mid-sentence.
+        // Replace each non-string piece with a space (since it usually sits
+        // at a word boundary), then collapse extra whitespace and strip any
+        // space that ends up before closing punctuation (e.g. "word .").
         return v.content
-          .filter((piece) => typeof piece === "string")
+          .map((piece) => (typeof piece === "string" ? piece : " "))
           .join("")
           .replace(/\s+/g, " ")
+          .replace(/\s+([.,;:!?’”)\]])/g, "$1")
           .trim();
       });
     }
