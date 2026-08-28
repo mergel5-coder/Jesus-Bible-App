@@ -88,15 +88,28 @@ async function retrieveRelevantTranscripts(chapterText) {
   const placeholders = keywords.map(() => "?").join(" OR content LIKE ");
   const likeParams = keywords.map((k) => `%${k}%`);
 
-  const result = await turso.execute({
-    sql: `SELECT title, content FROM transcripts WHERE content LIKE ${placeholders} LIMIT 5`,
-    args: likeParams,
-  });
+  try {
+    const result = await turso.execute({
+      sql: `SELECT title, content FROM transcripts WHERE content LIKE ${placeholders} LIMIT 5`,
+      args: likeParams,
+    });
 
-  if (result.rows.length === 0) return "";
-  return result.rows
-    .map((row) => `[${row.title}]\n${truncate(row.content, 600)}`)
-    .join("\n\n");
+    if (result.rows.length === 0) return "";
+    return result.rows
+      .map((row) => `[${row.title}]\n${truncate(row.content, 600)}`)
+      .join("\n\n");
+  } catch (err) {
+    // Grounding is optional -- the prompt already has a fallback for "no
+    // matching transcript found" -- so a DB issue here shouldn't block
+    // commentary generation. Warn loudly instead of crashing the batch.
+    console.warn(
+      `  Warning: couldn't retrieve transcripts (${err.message}). ` +
+      `Continuing without grounding material for this chapter. ` +
+      `If this happens for every chapter, double-check TURSO_DATABASE_URL ` +
+      `points to the database that has your Church Lessons transcripts table.`
+    );
+    return "";
+  }
 }
 
 function extractKeywords(text) {
