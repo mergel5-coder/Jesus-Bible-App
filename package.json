@@ -1,0 +1,13 @@
+{
+  "name": "bible-app-commentary-pipeline",
+  "version": "1.0.0",
+  "description": "Batch-generates chapter commentary for the Bible app",
+  "main": "generate-commentary.js",
+  "scripts": {
+    "generate": "node generate-commentary.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0",
+    "@libsql/client": "^0.14.0"
+  }
+}
