@@ -12,6 +12,8 @@ on:
         type: choice
         options:
           - list-tables
+          - view-commentary-john
+          - get-workspace-id
           - fetch-bsb-test
           - fetch-bsb-full
           - generate-batch-submit-john
@@ -39,6 +41,19 @@ jobs:
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: node list-tables.js
+
+      - name: View generated John commentary (diagnostic)
+        if: ${{ github.event.inputs.step == 'view-commentary-john' }}
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node view-commentary.js --book "John"
+
+      - name: Get workspace ID from a live API response (diagnostic)
+        if: ${{ github.event.inputs.step == 'get-workspace-id' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node get-workspace-id.js
 
       - name: Restore cached Bible text (if it exists from a previous run)
         uses: actions/cache@v4
