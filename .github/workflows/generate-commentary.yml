@@ -24,6 +24,7 @@ on:
           - generate-batch-submit-revelation
           - generate-batch-submit-all
           - generate-batch-check
+          - export-bundle
 
 jobs:
   run-pipeline:
@@ -142,6 +143,21 @@ jobs:
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: node generate-commentary-batch.js --check
+
+      - name: Export offline bundle (BSB text + commentary combined)
+        if: ${{ github.event.inputs.step == 'export-bundle' }}
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node export-bundle.js
+
+      - name: Upload bundle as downloadable artifact
+        if: ${{ github.event.inputs.step == 'export-bundle' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: bible-content-bundle
+          path: data/bible-content-bundle.json
+          retention-days: 14
 
       - name: Save Bible text for next run
         if: always()
