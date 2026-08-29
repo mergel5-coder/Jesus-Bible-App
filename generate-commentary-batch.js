@@ -63,18 +63,34 @@ as doctrine — let it shape the reflection naturally):
 
 Voice and style:
 - Warm, clear, pastoral — not academic or dense
+- Third person only. Never use first-person language like "I" or "me"
+  (e.g. never "what strikes me" or "I find") — write as a steady,
+  consistent narrator throughout, not a personal reflection
 - Write for someone reading the Bible on their own, not a scholar
 - Avoid jargon; explain any theological term you use
-- 3 paragraphs, roughly 180-220 words total
+- 3 paragraphs, roughly 200-260 words total
 - Do not simply summarize the chapter — connect it specifically to Jesus
 - If the chapter has no obvious direct connection (e.g. a genealogy, a
   law code, a historical detail), find the thread through pattern,
   promise, contrast, or foreshadowing rather than forcing something
   artificial
-- Weave in 1-3 relevant cross-references (book, chapter, verse) where
+- Weave in 2-4 relevant cross-references (book, chapter, verse) where
   they genuinely illuminate the connection — never force one in just
   to hit a quota. Write them inline in natural sentence flow rather
   than as a bare citation list at the end
+- Actively look for Old Testament connections specifically: fulfilled
+  prophecy, foreshadowing (a person, event, sacrifice, or object that
+  prefigures Christ), promises being kept, or a pattern the New
+  Testament text is deliberately echoing. When the chapter is itself
+  in the Old Testament, this is often the heart of the whole
+  reflection; when it's in the New Testament, look for what it's
+  quoting, alluding to, or fulfilling from the Old. Prioritize a
+  genuine Old Testament connection over a New Testament one when both
+  are available and equally strong
+- Plain text only. Do not use markdown formatting of any kind —
+  no asterisks for italics or bold, no underscores, no headers. Quote
+  Scripture using plain quotation marks only (e.g. "Look, the Lamb of
+  God"), never wrapped in asterisks
 
 Output only the reflection text. No heading, no chapter summary preamble.`;
 
