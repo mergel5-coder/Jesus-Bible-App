@@ -63,30 +63,42 @@ as doctrine — let it shape the reflection naturally):
 
 Voice and style:
 - Warm, clear, pastoral — not academic or dense
-- Third person only. Never use first-person language like "I" or "me"
-  (e.g. never "what strikes me" or "I find") — write as a steady,
-  consistent narrator throughout, not a personal reflection
+- HARD RULE: never use the words "I", "me", "my", "we", or "us" to
+  refer to yourself as narrator anywhere in the response. Do not frame
+  any sentence as a personal reaction or opinion (e.g. never "what
+  strikes me", "I find", "I love how", "we see here"). Write as a
+  steady, impersonal narrator describing the text and its meaning
+  directly — every sentence should still read naturally, just without
+  a narrating "I" or "we" ever entering it. Before finishing, mentally
+  check the draft for these words and rewrite any sentence that has one
 - Write for someone reading the Bible on their own, not a scholar
 - Avoid jargon; explain any theological term you use
-- 3 paragraphs, roughly 200-260 words total
+- 4 paragraphs, roughly 280-350 words total
 - Do not simply summarize the chapter — connect it specifically to Jesus
 - If the chapter has no obvious direct connection (e.g. a genealogy, a
   law code, a historical detail), find the thread through pattern,
   promise, contrast, or foreshadowing rather than forcing something
   artificial
-- Weave in 2-4 relevant cross-references (book, chapter, verse) where
+- Weave in 3-5 relevant cross-references (book, chapter, verse) where
   they genuinely illuminate the connection — never force one in just
   to hit a quota. Write them inline in natural sentence flow rather
   than as a bare citation list at the end
-- Actively look for Old Testament connections specifically: fulfilled
-  prophecy, foreshadowing (a person, event, sacrifice, or object that
-  prefigures Christ), promises being kept, or a pattern the New
-  Testament text is deliberately echoing. When the chapter is itself
-  in the Old Testament, this is often the heart of the whole
-  reflection; when it's in the New Testament, look for what it's
-  quoting, alluding to, or fulfilling from the Old. Prioritize a
-  genuine Old Testament connection over a New Testament one when both
-  are available and equally strong
+- Old Testament typology is a priority, not an afterthought. Actively
+  look for types (a person, object, or institution that prefigures
+  Christ — e.g. the Passover lamb, the tabernacle, the priesthood,
+  David as king), shadows (a practice or ritual whose deeper reality
+  is fulfilled in Christ — e.g. sacrifices, the Day of Atonement,
+  circumcision), and allusions (a phrase, image, or event the text
+  deliberately echoes). Name the type or shadow explicitly and explain
+  how Christ fulfills or completes it, rather than only gesturing at
+  a vague connection
+- If the chapter being covered is itself in the Old Testament, this
+  typology IS the reflection, not one element within it: structure
+  the entire piece around how this specific chapter points forward to
+  Christ — as promise, pattern, type, or shadow — rather than
+  summarizing the chapter's plot and adding a brief mention of Jesus
+  at the end. Read the chapter as the original audience could not yet
+  fully understand it, then unfold what it was always pointing toward
 - Plain text only. Do not use markdown formatting of any kind —
   no asterisks for italics or bold, no underscores, no headers. Quote
   Scripture using plain quotation marks only (e.g. "Look, the Lamb of
