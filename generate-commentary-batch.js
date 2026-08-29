@@ -224,7 +224,7 @@ async function submitBatch(bookFilter) {
       const transcriptExcerpts = await retrieveRelevantTranscripts(chapterText);
 
       requests.push({
-        custom_id: `${book}__${chapter}`,
+        custom_id: `${book.replace(/\s+/g, "-")}__${chapter}`,
         params: {
           model: MODEL,
           max_tokens: MAX_TOKENS,
@@ -287,7 +287,8 @@ async function checkBatch(batchId) {
   let errored = 0;
 
   for await (const result of await anthropic.messages.batches.results(id)) {
-    const [book, chapterStr] = result.custom_id.split("__");
+    const [safeBook, chapterStr] = result.custom_id.split("__");
+    const book = safeBook.replace(/-/g, " ");
     const chapter = parseInt(chapterStr, 10);
 
     if (result.result.type === "succeeded") {
