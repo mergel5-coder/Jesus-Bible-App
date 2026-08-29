@@ -13,11 +13,13 @@ on:
         options:
           - list-tables
           - view-commentary-john
+          - view-commentary-genesis
           - get-workspace-id
           - mark-rewrite-john
           - fetch-bsb-test
           - fetch-bsb-full
           - generate-batch-submit-john
+          - generate-batch-submit-genesis
           - generate-batch-submit-all
           - generate-batch-check
 
@@ -49,6 +51,13 @@ jobs:
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: node view-commentary.js --book "John"
+
+      - name: View generated Genesis commentary (diagnostic)
+        if: ${{ github.event.inputs.step == 'view-commentary-genesis' }}
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node view-commentary.js --book "Genesis"
 
       - name: Get workspace ID from a live API response (diagnostic)
         if: ${{ github.event.inputs.step == 'get-workspace-id' }}
@@ -88,6 +97,15 @@ jobs:
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: node generate-commentary-batch.js --submit --book "John"
+
+      - name: Submit commentary batch (Genesis only, for testing)
+        if: ${{ github.event.inputs.step == 'generate-batch-submit-genesis' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node generate-commentary-batch.js --submit --book "Genesis"
 
       - name: Submit commentary batch (all chapters)
         if: ${{ github.event.inputs.step == 'generate-batch-submit-all' }}
