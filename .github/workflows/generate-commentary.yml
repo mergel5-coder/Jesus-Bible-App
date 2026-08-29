@@ -11,6 +11,7 @@ on:
         default: "fetch-bsb-test"
         type: choice
         options:
+          - list-tables
           - fetch-bsb-test
           - fetch-bsb-full
           - generate-batch-submit-john
@@ -31,6 +32,13 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: List tables in the connected Turso database (diagnostic)
+        if: ${{ github.event.inputs.step == 'list-tables' }}
+        env:
+          TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
+        run: node list-tables.js
 
       - name: Restore cached Bible text (if it exists from a previous run)
         uses: actions/cache@v4
@@ -53,6 +61,7 @@ jobs:
         if: ${{ github.event.inputs.step == 'generate-batch-submit-john' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: node generate-commentary-batch.js --submit --book "John"
@@ -61,6 +70,7 @@ jobs:
         if: ${{ github.event.inputs.step == 'generate-batch-submit-all' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: node generate-commentary-batch.js --submit
@@ -69,6 +79,7 @@ jobs:
         if: ${{ github.event.inputs.step == 'generate-batch-check' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_WORKSPACE_ID: ${{ secrets.ANTHROPIC_WORKSPACE_ID }}
           TURSO_DATABASE_URL: ${{ secrets.TURSO_DATABASE_URL }}
           TURSO_AUTH_TOKEN: ${{ secrets.TURSO_AUTH_TOKEN }}
         run: node generate-commentary-batch.js --check
