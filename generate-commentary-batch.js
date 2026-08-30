@@ -301,7 +301,10 @@ async function checkBatch(batchId) {
       await saveCommentary(book, chapter, text);
       saved++;
     } else {
-      console.error(`✗ ${book} ${chapter}: ${result.result.type}`);
+      const errorDetail = result.result.error
+        ? `${result.result.error.type}: ${result.result.error.message}`
+        : result.result.type;
+      console.error(`✗ ${book} ${chapter}: ${errorDetail}`);
       errored++;
     }
   }
